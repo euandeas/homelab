@@ -1,0 +1,44 @@
+[Unit]
+Description=Tailscale
+Documentation=https://tailscale.com/docs/
+After=proton-wg.service
+
+[Container]
+AutoUpdate=registry
+ContainerName=tailscale-exit
+Image=docker.io/tailscale/tailscale:latest
+
+# Environment variables.
+Environment=TS_AUTH_KEY=${TAILSCALE_AUTH_KEY}
+Environment=TS_HOSTNAME=fedora-server-exit
+Environment=TS_ACCEPT_DNS=false
+Environment=TS_USERSPACE=false
+Environment=TS_EXTRA_ARGS=--advertise-exit-node
+Environment=TS_NO_LOGS_NO_SUPPORT=true
+Environment=TS_STATE_DIR=/var/lib/tailscale
+
+Volume=tailscale-exit:/var/lib/tailscale
+
+AddDevice=/dev/net/tun:/dev/net/tun
+AddCapability=CAP_NET_ADMIN
+AddCapability=CAP_NET_RAW
+
+Network=def-net
+IP=10.89.0.101
+Sysctl=net.ipv4.ip_forward=1
+Sysctl=net.ipv6.conf.all.forwarding=1
+
+[Service]
+Restart=always
+TimeoutStartSec=90
+TimeoutStopSec=30
+EnvironmentFile=%h/homelab/.env
+
+ExecStartPost=/bin/sh -c "podman exec tailscale-exit ip route add default via 10.89.0.1 dev eth0 table 100"
+ExecStartPost=/bin/sh -c "podman exec tailscale-exit ip route add 10.89.0.0/24 dev eth0 proto kernel scope link src 10.89.0.101 table 100"
+ExecStartPost=/bin/sh -c "podman exec tailscale-exit ip rule add from all fwmark 0x80000/0xff0000 lookup 100 pref 4200"
+ExecStartPost=/bin/sh -c "podman exec tailscale-exit ip route replace default via 10.89.0.100 dev eth0"
+ExecStartPost=/bin/sh -c "podman exec tailscale-exit iptables -t nat -I POSTROUTING 1 -o eth0 -j MASQUERADE"
+
+[Install]
+WantedBy=default.target

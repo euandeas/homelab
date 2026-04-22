@@ -1,0 +1,15 @@
+[Unit]
+Description=DNS Pod
+
+[Pod]
+PodName=dns
+Network=def-net
+IP=10.89.0.53
+
+PublishPort=5380:5380/tcp
+PublishPort=53443:53443/tcp
+PublishPort=53:53/udp
+PublishPort=53:53/tcp
+PublishPort=853:853/tcp
+PublishPort=44343:44343/udp
+PublishPort=44343:44343/tcp

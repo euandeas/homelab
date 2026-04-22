@@ -1,0 +1,48 @@
+*.example.com {
+	tls {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+		resolvers 1.1.1.1 8.8.8.8
+	}
+}
+
+cockpit.example.com {
+	reverse_proxy https://host.containers.internal:9090 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
+}
+
+dns.example.com {
+	handle /dns-query* {
+		reverse_proxy https://dns:44343 {
+			transport http {
+				tls_insecure_skip_verify
+			}
+		}
+	}
+
+	handle {
+		reverse_proxy https://dns:53443 {
+			transport http {
+				tls_insecure_skip_verify
+			}
+		}
+	}
+}
+
+sync.example.com {
+	reverse_proxy https://syncthing:8384 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
+}
+
+start.example.com {
+	reverse_proxy http://glance:8080
+}
+
+mc.example.com {
+	reverse_proxy minecraft:25565
+}

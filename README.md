@@ -1,0 +1,117 @@
+# Homelab
+
+Personal homelab configuration for **Fedora Server**, running containers via **Podman** with **systemd Quadlets**.
+
+This repository contains my container definitions and configurations for networking, media, and utility services. Everything is managed as systemd user units through Podman Quadlets and deployed using the included `symlink.sh` script.
+
+## Quick Start
+
+### 1. Clone and Link
+
+Clone the repository and run the symlink script to link all Quadlet directories into `~/.config/containers/systemd/`:
+
+```
+cd ~
+git clone https://github.com/euandeas/homelab
+cd homelab
+./symlink.sh
+```
+
+### 2. Configure
+
+Before deploying, do a project-wide find-and-replace with your own details:
+
+| Placeholder | Replace with |
+| --- | --- |
+| `example.com` | Your domain name |
+| `/home/user/` | Your home directory path |
+| `user@.host` | Your systemd username (for `--machine`) |
+| `Player1` | Your Minecraft username |
+| `192.168.0.0/24` | Your local subnet |
+| `192.168.0.100` | Your local DNS server IP |
+
+### 3. Create Environment File
+
+Some containers require environment variables. Create a `.env` file in the repository root:
+
+```
+touch ~/homelab/.env
+```
+
+Add any required keys (e.g. `TAILSCALE_AUTH_KEY`, API tokens for DDNS, etc.).
+
+### 4. Start Services
+
+Reload systemd and enable the containers you need:
+
+```
+systemctl --user daemon-reload
+systemctl --user enable --now glance.service
+systemctl --user enable --now minecraft.service
+```
+
+### 5. Open Firewall
+
+Allow web traffic through the firewall for Caddy and other web-facing services:
+
+```
+sudo firewall-cmd --add-service=http --permanent
+sudo firewall-cmd --add-service=https --permanent
+sudo firewall-cmd --reload
+```
+
+### 6. SELinux
+
+Some containers require specific SELinux booleans to be enabled:
+
+```
+sudo semanage boolean -m --on container_use_devices
+sudo semanage boolean -m --on virt_sandbox_use_all_caps
+sudo semanage boolean -m --on virt_use_nfs
+```
+
+## Repository Structure
+
+```
+.
+├── glance/                   # Dashboard
+│   ├── config/               # Glance app config
+│   └── glance.container
+├── minecraft/                # Minecraft server (Fabric/Modrinth)
+│   └── mc.container
+├── networking/               # Networking stack
+│   ├── caddy/                # Reverse proxy
+│   │   ├── config/
+│   │   ├── container/
+│   │   └── caddy.container
+│   ├── ddns/                 # Dynamic DNS (ddclient)
+│   │   ├── config/
+│   │   └── ddclient.container
+│   ├── dns/                  # DNS (Technitium + Tailscale)
+│   │   ├── config/
+│   │   ├── dns.pod
+│   │   ├── tailscale-dns.container
+│   │   └── technitium.container
+│   ├── ts-exit/              # Tailscale exit node (ProtonVPN WireGuard)
+│   │   ├── proton-wg.container
+│   │   └── tailscale-exit.container
+│   ├── default.network       # Shared Podman network
+│   └── tailscale-relay.container  # Tailscale relay
+├── syncthing/                # File sync
+│   └── syncthing.container
+├── symlink.sh                # Symlinks all dirs into systemd quadlet path
+└── .env                      # Environment variables (not tracked)
+```
+
+## Useful Commands
+
+| Action | Command |
+| --- | --- |
+| Reload after changes | `systemctl --user daemon-reload` |
+| Check status | `systemctl --user status <name>.service` |
+| Follow logs | `journalctl --user -u <name>.service -f` |
+| List running containers | `podman ps` |
+
+## References
+
+- Technitium + Cloudflare DoH: https://ambientnode.uk/setting-up-dns-over-https-on-technitium-with-cloudflare/

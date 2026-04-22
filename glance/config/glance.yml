@@ -1,0 +1,101 @@
+server:
+  assets-path: /app/config/css
+theme:
+  custom-css-file: assets/main.css
+  disable-picker: true
+pages:
+  - name: Dashboard
+    # Optionally, if you only have a single page you can hide the desktop navigation for a cleaner look
+    # hide-desktop-navigation: true
+    columns:
+      - size: small
+        widgets:
+          - type: clock
+            hour-format: 24h
+          - type: server-stats
+            servers:
+              - type: local
+                name: Services
+          - type: dns-stats
+            service: technitium
+            url: https://dns.example.com/
+            token: ${TECHNITIUM_KEY}
+
+      - size: full
+        widgets:
+          - type: docker-containers
+            title: Containers
+            hide-by-default: true
+            containers:
+              glance:
+                name: Glance
+                description: You are here!
+                url: https://start.example.com
+                icon: sh:glance-light
+                hide: false
+              minecraft:
+                name: Minecraft Server
+                description: Modrinth pack adrenaline, fabric loader
+                icon: sh:minecraft-light
+                hide: false
+              caddy:
+                name: Caddy Reverse Proxy
+                description: Local reverse proxy
+                icon: sh:caddy-light
+                hide: false
+              syncthing:
+                name: Syncthing
+                description: File sync server
+                url: https://sync.example.com
+                icon: sh:syncthing-light
+                hide: false
+              technitium:
+                name: Technitium DNS
+                description: Recursive DNS server
+                url: https://dns.example.com
+                icon: sh:technitium-light
+                hide: false
+              ddns:
+                name: DDClient
+                description: Dynamic DNS updater
+                icon: sh:ddclient-light
+                hide: false
+              proton-wg:
+                name: Gluetun VPN
+                description: ProtonVPN For Tailscale Exit
+                icon: sh:proton-vpn-light
+                hide: false
+          - type: docker-containers
+            title: Tailscale Containers
+            hide-by-default: true
+            containers:
+              tailscale-dns:
+                name: Tailscale DNS
+                url: https://login.tailscale.com/
+                icon: sh:tailscale-light
+                hide: false
+              tailscale-relay:
+                name: Tailscale Relay
+                url: https://login.tailscale.com/
+                icon: sh:tailscale-light
+                hide: false
+              tailscale-exit:
+                name: Tailscale Exit Node
+                url: https://login.tailscale.com/
+                icon: sh:tailscale-light
+                hide: false
+
+      - size: small
+        widgets:
+          - type: releases
+            show-source-icon: true
+            collapse-after: -1
+            repositories:
+              - dockerhub:glanceapp/glance
+              - dockerhub:itzg/minecraft-server
+              - dockerhub:caddyserver/caddy
+              - dockerhub:syncthing/syncthing
+              - dockerhub:technitium/dns-server
+              - dockerhub:linuxserver/ddclient
+              - dockerhub:tailscale/tailscale
+              - dockerhub:qmcgaw/gluetun

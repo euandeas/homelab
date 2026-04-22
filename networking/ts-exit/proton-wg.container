@@ -1,0 +1,42 @@
+[Unit]
+Description=Gluetun VPN
+Documentation=https://github.com/qdm12/gluetun-wiki
+
+[Container]
+AutoUpdate=registry
+ContainerName=proton-wg
+Image=docker.io/qmcgaw/gluetun:latest
+
+Environment=VPN_SERVICE_PROVIDER=protonvpn
+Environment=VPN_TYPE=wireguard
+Environment=WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+Environment=SERVER_COUNTRIES="United Kingdom"
+Environment=TZ=Europe/London
+Environment=UPDATER_PERIOD=24h
+Environment=FIREWALL_OUTBOUND_SUBNETS=192.168.0.0/24,100.64.0.0/10
+Environment=DNS_ADDRESS=192.168.0.100
+
+Volume=gluetun:/gluetun:Z
+
+AddDevice=/dev/net/tun:/dev/net/tun
+AddCapability=CAP_NET_ADMIN
+AddCapability=CAP_NET_RAW
+
+Network=def-net
+IP=10.89.0.100
+Sysctl=net.ipv4.ip_forward=1
+Sysctl=net.ipv6.conf.all.forwarding=1
+
+[Service]
+Restart=always
+TimeoutStartSec=90
+TimeoutStopSec=30
+EnvironmentFile=%h/homelab/.env
+
+ExecStartPost=/bin/sh -c "podman exec proton-wg iptables -I FORWARD 1 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT"
+ExecStartPost=/bin/sh -c "podman exec proton-wg iptables -I FORWARD 2 -i eth0 -o tun0 -j ACCEPT"
+ExecStartPost=/bin/sh -c "podman exec proton-wg iptables -I FORWARD 3 -i tun0 -o eth0 -j ACCEPT"
+ExecStartPost=/bin/sh -c "podman exec proton-wg iptables -t nat -A POSTROUTING -o tun0 -j MASQUERADE"
+
+[Install]
+WantedBy=default.target

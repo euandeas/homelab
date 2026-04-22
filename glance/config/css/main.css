@@ -1,0 +1,61 @@
+@import "inter.css";
+@import "site.css";
+@import "widgets.css";
+@import "popover.css";
+@import "utils.css";
+@import "mobile.css";
+
+:root {
+    font-size: 10px;
+
+    --scheme: ;
+    --bgh: 240;
+    --bgs: 8%;
+    --bgl: 9%;
+    --bghs: var(--bgh), var(--bgs);
+    --cm: 1;
+    --tsm: 1;
+
+    --widget-gap: 23px;
+    --widget-content-vertical-padding: 15px;
+    --widget-content-horizontal-padding: 17px;
+    --widget-content-padding: var(--widget-content-vertical-padding) var(--widget-content-horizontal-padding);
+    --content-bounds-padding: 15px;
+    --border-radius: 5px;
+    --mobile-navigation-height: 50px;
+
+    --color-primary: #E6E4D9;                 /* fx-100 */
+    --color-positive: #879A39;                /* green */
+    --color-negative: #D14D41;                /* red */
+
+    --color-background: #100F0F;              /* black */
+    --color-widget-background-hsl-values: initial; /* no longer used */
+    --color-widget-background: #1C1B1A;       /* paper */
+
+    --color-separator: #343331;               /* 800 */
+    --color-widget-content-border: #343331;   /* 800 */
+    --color-widget-background-highlight: #282726; /* 900 */
+
+    --color-popover-background: #282726;      /* 900 */
+    --color-popover-border: #403E3C;          /* 700 */
+
+    --color-progress-border: #403E3C;         /* 700 */
+    --color-progress-value: #4385BE;          /* blue */
+    --color-vertical-progress-value: #3AA99F; /* cyan */
+
+    --color-graph-gridlines: #343331;         /* 800 */
+
+    --color-text-highlight: #E6E4D9;          /* 100 */
+    --color-text-paragraph: #B7B5AC;          /* 200 */
+    --color-text-base: #9F9D96;               /* 300 */
+    --color-text-base-muted: #878580;         /* 400 */
+    --color-text-subdue: #6F6E69;             /* 500 */
+
+    --font-size-h1: 1.7rem;
+    --font-size-h2: 1.6rem;
+    --font-size-h3: 1.5rem;
+    --font-size-h4: 1.4rem;
+    --font-size-base: 1.3rem;
+    --font-size-h5: 1.2rem;
+    --font-size-h6: 1.1rem;
+}
