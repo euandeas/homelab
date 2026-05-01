@@ -112,13 +112,25 @@ sudo semanage boolean -m --on virt_use_nfs
 | Follow logs | `journalctl --user -u <name>.service -f` |
 | List running containers | `podman ps` |
 
-## DNS over TLS Certificate
+## Extra Setup
+
+### DNS over TLS Certificate
 
 The Technitium container mounts a `.pfx` certificate from `networking/dns/certs/` for DNS over TLS. After generating or renewing the cert, fix the permissions (requires sudo due to SELinux context):
 
 ```
 sudo chcon -Rt container_file_t ~/homelab/networking/dns/certs/
 sudo chmod 644 ~/homelab/networking/dns/certs/cert.pfx
+```
+
+### Cockpit Behind a Reverse Proxy
+
+To serve Cockpit behind Caddy, create `/etc/cockpit/cockpit.conf`:
+
+```
+[WebService]
+Origins = https://cockpit.example.com https://192.168.0.100:9090 wss://cockpit.example.com
+ProtocolHeader = X-Forwarded-Proto
 ```
 
 ## References
