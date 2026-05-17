@@ -19,7 +19,7 @@ PublishPort=853:853/tcp
 PublishPort=44343:44343/udp
 PublishPort=44343:44343/tcp
 
-Volume=dns:/etc/dns
+Volume=dns:/etc/dns:Z
 Volume=./certs:/certs:ro,Z
 
 Environment=HOSTNAME=dns-server

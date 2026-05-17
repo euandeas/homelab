@@ -9,14 +9,12 @@ AutoUpdate=registry
 Image=docker.io/tailscale/tailscale:latest
 ContainerName=tailscale
 
-Network=host
+Network=homelab
 
 AddDevice=/dev/net/tun:/dev/net/tun
 
 AddCapability=CAP_NET_ADMIN
 AddCapability=CAP_NET_RAW
-
-PublishPort=41641:41641/udp
 
 Volume=tailscale:/var/lib/tailscale
 
