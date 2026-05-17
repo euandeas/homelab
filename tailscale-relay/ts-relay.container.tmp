@@ -1,34 +1,38 @@
 [Unit]
 Description=Tailscale
 Documentation=https://tailscale.com/docs/
+After=network-online.target
+Wants=network-online.target
 
 [Container]
 AutoUpdate=registry
-ContainerName=tailscale-relay
 Image=docker.io/tailscale/tailscale:latest
+ContainerName=tailscale-relay
+
+Network=host
+
+AddDevice=/dev/net/tun:/dev/net/tun
+
+AddCapability=CAP_NET_ADMIN
+AddCapability=CAP_NET_RAW
 
 PublishPort=40000:40000/udp
 
-# Environment variables.
+Volume=tailscale-relay:/var/lib/tailscale
+EnvironmentFile=%h/homelab/.env
+
 Environment=TS_AUTH_KEY=${TAILSCALE_AUTH_KEY}
 Environment=TS_HOSTNAME=fedora-server-relay
 Environment=TS_USERSPACE=false
 Environment=TS_NO_LOGS_NO_SUPPORT=true
 Environment=TS_STATE_DIR=/var/lib/tailscale
 
-Volume=tailscale-relay:/var/lib/tailscale
-
-AddDevice=/dev/net/tun:/dev/net/tun
-AddCapability=CAP_NET_ADMIN
-AddCapability=CAP_NET_RAW
-
 [Service]
 Restart=always
 TimeoutStartSec=90
 TimeoutStopSec=30
-EnvironmentFile=%h/homelab/.env
 
 ExecStartPost=/bin/sh -c "podman exec tailscale-relay tailscale set --relay-server-port=40000"
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target

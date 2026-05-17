@@ -1,17 +1,18 @@
 [Unit]
 Description=Dynamic DNS (ddclient)
 Documentation=https://ddclient.net/
+After=network-online.target
+Wants=network-online.target
 
 [Container]
 AutoUpdate=registry
-ContainerName=ddns
 Image=docker.io/linuxserver/ddclient:latest
+ContainerName=ddns
 
-EnvironmentFile=%h/homelab/.env
+Network=homelab
 
 Volume=./config:/config:Z
-
-Network=def-net
+EnvironmentFile=%h/homelab/.env
 
 [Service]
 Restart=always
@@ -19,4 +20,4 @@ TimeoutStartSec=90
 TimeoutStopSec=30
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target

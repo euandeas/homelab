@@ -1,21 +1,24 @@
 [Unit]
 Description=Caddy Reverse Proxy
 Documentation=https://caddyserver.com/
+After=network-online.target
+Wants=network-online.target
 
 [Container]
 AutoUpdate=local
-ContainerName=caddy
 Image=localhost/caddy:latest
+ContainerName=caddy
+
+Network=homelab
 
 PublishPort=443:443/tcp
 PublishPort=443:443/udp
 PublishPort=80:80
 
-EnvironmentFile=%h/homelab/.env
-
 Volume=./config/Caddyfile:/etc/caddy/Caddyfile:Z
 Volume=caddy-data:/data:Z
 Volume=caddy-config:/config:Z
+EnvironmentFile=%h/homelab/.env
 
 Network=def-net
 
@@ -25,4 +28,4 @@ TimeoutStartSec=90
 TimeoutStopSec=30
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target

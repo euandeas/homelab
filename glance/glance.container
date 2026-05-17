@@ -1,20 +1,21 @@
 [Unit]
 Description=Glance
 Documentation=https://github.com/glanceapp/glance/tree/main
+After=network-online.target
+Wants=network-online.target
 
 [Container]
 AutoUpdate=registry
-ContainerName=glance
 Image=docker.io/glanceapp/glance:latest
+ContainerName=glance
+
+Network=homelab
 
 PublishPort=8080:8080
 
-EnvironmentFile=%h/homelab/.env
-
 Volume=./config:/app/config:Z
 Volume=/run/user/1000/podman/podman.sock:/var/run/docker.sock:Z
-
-Network=def-net
+EnvironmentFile=%h/homelab/.env
 
 [Service]
 Restart=always
@@ -22,4 +23,4 @@ TimeoutStartSec=90
 TimeoutStopSec=30
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target

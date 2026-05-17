@@ -123,6 +123,20 @@ sudo chcon -Rt container_file_t ~/homelab/networking/dns/certs/
 sudo chmod 644 ~/homelab/networking/dns/certs/cert.pfx
 ```
 
+### Setup DNS
+
+Make sure that the server is using technitium DNS.
+
+```
+sudo tee /etc/systemd/resolved.conf.d/dns.conf << 'EOF'
+[Resolve]
+DNS=127.0.0.1
+FallbackDNS=1.1.1.1#cloudflare-dns.com 9.9.9.9#dns.quad9.net
+EOF
+
+sudo systemctl restart systemd-resolved
+```
+
 ### Cockpit Behind a Reverse Proxy
 
 To serve Cockpit behind Caddy, create `/etc/cockpit/cockpit.conf`:

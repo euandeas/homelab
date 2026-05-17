@@ -6,7 +6,7 @@
 }
 
 cockpit.example.com {
-	reverse_proxy https://host.containers.internal:9090 {
+	reverse_proxy host.containers.internal:9090 {
 		transport http {
 			tls_insecure_skip_verify
 		}
@@ -15,7 +15,7 @@ cockpit.example.com {
 
 dns.example.com {
 	handle /dns-query* {
-		reverse_proxy https://dns:44343 {
+		reverse_proxy dns:44343 {
 			transport http {
 				tls_insecure_skip_verify
 			}
@@ -23,7 +23,7 @@ dns.example.com {
 	}
 
 	handle {
-		reverse_proxy https://dns:53443 {
+		reverse_proxy dns:53443 {
 			transport http {
 				tls_insecure_skip_verify
 			}
@@ -32,7 +32,7 @@ dns.example.com {
 }
 
 sync.example.com {
-	reverse_proxy https://syncthing:8384 {
+	reverse_proxy syncthing:8384 {
 		transport http {
 			tls_insecure_skip_verify
 		}
@@ -40,7 +40,7 @@ sync.example.com {
 }
 
 start.example.com {
-	reverse_proxy http://glance:8080
+	reverse_proxy glance:8080
 }
 
 mc.example.com {
