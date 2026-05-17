@@ -15,7 +15,7 @@ cockpit.example.com {
 
 dns.example.com {
 	handle /dns-query* {
-		reverse_proxy dns:44343 {
+		reverse_proxy technitium:44343 {
 			transport http {
 				tls_insecure_skip_verify
 			}
@@ -23,7 +23,7 @@ dns.example.com {
 	}
 
 	handle {
-		reverse_proxy dns:53443 {
+		reverse_proxy technitium:53443 {
 			transport http {
 				tls_insecure_skip_verify
 			}
