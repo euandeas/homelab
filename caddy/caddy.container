@@ -20,8 +20,6 @@ Volume=caddy-data:/data:Z
 Volume=caddy-config:/config:Z
 EnvironmentFile=%h/homelab/.env
 
-Network=def-net
-
 [Service]
 Restart=always
 TimeoutStartSec=90
