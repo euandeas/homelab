@@ -70,39 +70,6 @@ sudo semanage boolean -m --on virt_sandbox_use_all_caps
 sudo semanage boolean -m --on virt_use_nfs
 ```
 
-## Repository Structure
-
-```
-.
-├── glance/                   # Dashboard
-│   ├── config/               # Glance app config
-│   └── glance.container
-├── minecraft/                # Minecraft server (Fabric/Modrinth)
-│   └── mc.container
-├── networking/               # Networking stack
-│   ├── caddy/                # Reverse proxy
-│   │   ├── config/
-│   │   ├── container/
-│   │   └── caddy.container
-│   ├── ddns/                 # Dynamic DNS (ddclient)
-│   │   ├── config/
-│   │   └── ddclient.container
-│   ├── dns/                  # DNS (Technitium + Tailscale)
-│   │   ├── config/
-│   │   ├── dns.pod
-│   │   ├── tailscale-dns.container
-│   │   └── technitium.container
-│   ├── ts-exit/              # Tailscale exit node (ProtonVPN WireGuard)
-│   │   ├── proton-wg.container
-│   │   └── tailscale-exit.container
-│   ├── default.network       # Shared Podman network
-│   └── tailscale-relay.container  # Tailscale relay
-├── syncthing/                # File sync
-│   └── syncthing.container
-├── symlink.sh                # Symlinks all dirs into systemd quadlet path
-└── .env                      # Environment variables (not tracked)
-```
-
 ## Useful Commands
 
 | Action | Command |
