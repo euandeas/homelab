@@ -14,7 +14,7 @@ Clone the repository and run the symlink script to link all Quadlet directories 
 cd ~
 git clone https://github.com/euandeas/homelab
 cd homelab
-./symlink.sh
+./setup.sh
 ```
 
 ### 2. Configure
