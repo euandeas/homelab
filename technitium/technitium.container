@@ -14,8 +14,10 @@ Network=homelab
 PublishPort=5380:5380/tcp
 PublishPort=53443:53443/tcp
 PublishPort=53:53/udp
+# This avoids conflicts with podman dns!
 PublishPort=127.0.0.1:53:53/udp
 PublishPort=192.168.0.100:53:53/udp
+#
 PublishPort=53:53/tcp
 PublishPort=853:853/tcp
 PublishPort=44343:44343/udp
