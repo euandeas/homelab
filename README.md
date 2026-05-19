@@ -38,7 +38,7 @@ Some containers require environment variables. Create a `.env` file in the repos
 touch ~/homelab/.env
 ```
 
-Add any required keys (e.g. `TAILSCALE_AUTH_KEY`, API tokens for DDNS, etc.).
+Add any required keys (e.g. API tokens for DDNS, etc.).
 
 ### 4. Start Services
 
